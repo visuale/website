@@ -26,6 +26,7 @@ public class Addon implements Serializable
    private String branch;
    private String tags;
    private String logo;
+   private String path;
    private Category category;
 
    public String getId()
@@ -106,6 +107,16 @@ public class Addon implements Serializable
    public void setBranch(String branch)
    {
       this.branch = branch;
+   }
+   
+   public String getPath()
+   {
+      return path;
+   }
+   
+   public void setPath(String path)
+   {
+      this.path = path;
    }
 
    public String getTags()

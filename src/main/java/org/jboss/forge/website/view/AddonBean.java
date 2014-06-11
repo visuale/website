@@ -57,8 +57,10 @@ public class AddonBean implements Serializable
       List<Addon> addons = service.getAllAddons();
       for (Addon addon : addons)
       {
-         if (Strings.isNullOrEmpty(searchQuery) || (addon.getName() != null && addon.getName().toLowerCase().contains(searchQuery.toLowerCase()))
-                  || (addon.getDescription() != null && addon.getDescription().toLowerCase().contains(searchQuery.toLowerCase()))
+         if (Strings.isNullOrEmpty(searchQuery)
+                  || (addon.getName() != null && addon.getName().toLowerCase().contains(searchQuery.toLowerCase()))
+                  || (addon.getDescription() != null && addon.getDescription().toLowerCase()
+                           .contains(searchQuery.toLowerCase()))
                   || (addon.getAuthor() != null && addon.getAuthor().toLowerCase().contains(searchQuery.toLowerCase()))
                   || (addon.getTags() != null && addon.getTags().toLowerCase().contains(searchQuery.toLowerCase())))
          {
@@ -100,11 +102,23 @@ public class AddonBean implements Serializable
 
    public String getReadmeHTML()
    {
+      String path = "/README";
+      if (addon.getPath() != null && !addon.getPath().trim().isEmpty())
+      {
+         if (addon.getPath().endsWith("/"))
+            path = path.substring(1);
+
+         path = addon.getPath() + path;
+
+         if (!path.startsWith("/"))
+            path = "/" + path;
+      }
+
       Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
                .path("/api/v1/serve")
                .query("repo", addon.getRepo())
                .query("ref", addon.getBranch())
-               .query("path", "/README").build();
+               .query("path", path).build();
 
       String result = downloader.download(address.toString());
 

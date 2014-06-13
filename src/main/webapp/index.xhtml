@@ -22,9 +22,34 @@
 			</div>
 		</div>
 
-
 		<!-- Forge intro -->
 		<div class="row">
+			<!-- News -->
+			<div class="col-sm-12">
+				<h3>See what's new</h3>
+				<div class="row">
+					<ui:repeat var="item" value="#{indexBean.newsFeed}">
+						<div class="col-sm-4">
+							<div class="widget-container widget-document boxed">
+								<div class="inner clearfix">
+									<h5>
+										<h:outputText value="#{item.title}" />
+									</h5>
+									<span class="subtitle"><p>
+											<h:outputText value="#{item.summary}" />
+										</p></span>
+									<div class="btn btn-caps">
+										<h:link outcome="/news-entry">
+											<f:param name="title" value="#{item.title}" />
+											<span>Read this &rarr;</span>
+										</h:link>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ui:repeat>
+				</div>
+			</div>
 			<div class="col-sm-12">
 				<h3>The fastest way to build Maven-based Java EE projects. Period</h3>
 				<iframe width="853" height="480" src="//www.youtube.com/embed/5xO3jhntTt8" frameborder="0"
@@ -72,153 +97,148 @@
 				</div>
 			</div>
 
-
 			<!-- Community intro -->
-			<div class="row">
-				<div class="col-sm-12">
-					<h3>A rapidly growing community</h3>
-					<div class="row">
-						<div class="col-sm-4 pull-center">
-							<!-- Image Slider -->
-							<div class="widget-container widget-gallery boxed">
-								<div class="inner">
-									<div id="myCarousel3" class="carousel slide" data-interval="20000">
-										<!-- Carousel items -->
-										<div class="carousel-inner">
-											<ui:repeat varStatus="status" var="item" value="#{indexBean.contributors}">
-												<div class="#{status.index == 0 ? 'active item' : 'item'}">
-													<a href="#{item.html_url}"> <h:graphicImage value="#{item.avatar_url}" /></a>
-													<div class="carousel-desc gradient">
-														<strong>#{item.login}</strong>
-													</div>
+			<div class="col-sm-12">
+				<h3>A rapidly growing community</h3>
+				<div class="row">
+					<div class="col-sm-4 pull-center">
+						<!-- Image Slider -->
+						<div class="widget-container widget-gallery boxed">
+							<div class="inner">
+								<div id="myCarousel3" class="carousel slide" data-interval="20000">
+									<!-- Carousel items -->
+									<div class="carousel-inner">
+										<ui:repeat varStatus="status" var="item" value="#{indexBean.contributors}">
+											<div class="#{status.index == 0 ? 'active item' : 'item'}">
+												<a href="#{item.html_url}"> <h:graphicImage value="#{item.avatar_url}" /></a>
+												<div class="carousel-desc gradient">
+													<strong>#{item.login}</strong>
 												</div>
-											</ui:repeat>
-										</div>
-										<!-- Carousel indicators -->
-										<ol class="carousel-indicators">
-											<li data-target="#myCarousel3" data-slide-to="0" class="active"></li>
-											<li data-target="#myCarousel3" data-slide-to="1"></li>
-											<li data-target="#myCarousel3" data-slide-to="2"></li>
-											<li data-target="#myCarousel3" data-slide-to="3"></li>
-											<li data-target="#myCarousel3" data-slide-to="4"></li>
-
-										</ol>
-										<!-- Carousel nav -->
-										<a class="carousel-control left" href="#myCarousel3" data-slide="prev"></a> <a class="carousel-control right"
-											href="#myCarousel3" data-slide="next"></a>
+											</div>
+										</ui:repeat>
 									</div>
+									<!-- Carousel indicators -->
+									<ol class="carousel-indicators">
+										<li data-target="#myCarousel3" data-slide-to="0" class="active"></li>
+										<li data-target="#myCarousel3" data-slide-to="1"></li>
+										<li data-target="#myCarousel3" data-slide-to="2"></li>
+										<li data-target="#myCarousel3" data-slide-to="3"></li>
+										<li data-target="#myCarousel3" data-slide-to="4"></li>
+
+									</ol>
+									<!-- Carousel nav -->
+									<a class="carousel-control left" href="#myCarousel3" data-slide="prev"></a> <a class="carousel-control right"
+										href="#myCarousel3" data-slide="next"></a>
 								</div>
 							</div>
-							<!--/ Image Slider -->
 						</div>
+						<!--/ Image Slider -->
 					</div>
-					<hr class="margin-50" />
 				</div>
+				<hr class="margin-50" />
 			</div>
 
 
 
 			<!-- Download call to action -->
-			<div class="row">
-				<div class="col-sm-12">
-					<h3>Works in the environment you use</h3>
-					<!-- pricing1-->
-					<div class="pricing_box price_style1 clearfix">
-						<ul>
-							<li class="price_col price_col_yellow">
-								<!--pricing item-->
-								<div class="price_item">
-									<div class="inner">
-										<div class="badge badge-popular"></div>
-										<div class="price_col_head">
-											<span class="price">IDE</span>
-										</div>
-										<div class="price_col_body clearfix">
-											<div class="price_body_inner">
-												<div class="price_body_top">
-													<span>Download Forge for your IDE</span>
-												</div>
-												<ul>
-													<li><a href="http://tools.jboss.org/" class="btn btn-gray"><span>Eclipse</span></a></li>
-													<li><a href="#" class="btn btn-gray disabled"><span>IntelliJ</span></a></li>
-													<li><a href="#" class="btn btn-gray disabled"><span>Netbeans</span></a></li>
-												</ul>
-											</div>
-										</div>
-									</div>
-								</div> <!--/ pricing-item -->
-							</li>
-
-							<li class="price_col col_active">
-								<!--pricing item-->
-								<div class="price_item">
-									<div class="inner">
-										<div class="badge badge-popular"></div>
-										<div class="price_col_head">
-											<span class="price">JBDS</span>
-										</div>
-										<div class="price_col_body clearfix">
-											<div class="price_body_inner">
-												<div class="price_body_top">
-													<strong>Included</strong> <span>in <a href="http://tools.jboss.org/downloads/overview.html"
-														class="btn btn-large btn-caps">JBoss Developer Studio</a></span>
-												</div>
-												<ul>
-													<li>Graphical Interface</li>
-													<li>Workspace Sync</li>
-													<li>Embedded CLI</li>
-												</ul>
-											</div>
-										</div>
-										<div class="price_col_foot">
-											<div class="sign_up">
-												<a href="https://www.jboss.org/products/devstudio.html" class="btn btn-large btn-caps"><span>Download</span></a>
-											</div>
-										</div>
-									</div>
-								</div> <!--/ pricing-item -->
-							</li>
-
-							<li class="price_col price_col_purple">
-								<!--pricing item-->
-								<div class="price_item">
+			<div class="col-sm-12">
+				<h3>Works in the environment you use</h3>
+				<!-- pricing1-->
+				<div class="pricing_box price_style1 clearfix">
+					<ul>
+						<li class="price_col price_col_yellow">
+							<!--pricing item-->
+							<div class="price_item">
+								<div class="inner">
 									<div class="badge badge-popular"></div>
-									<div class="inner">
-										<div class="price_col_head">
-											<span class="price">OS</span>
+									<div class="price_col_head">
+										<span class="price">IDE</span>
+									</div>
+									<div class="price_col_body clearfix">
+										<div class="price_body_inner">
+											<div class="price_body_top">
+												<span>Download Forge for your IDE</span>
+											</div>
+											<ul>
+												<li><a href="http://tools.jboss.org/" class="btn btn-gray"><span>Eclipse</span></a></li>
+												<li><a href="#" class="btn btn-gray disabled"><span>IntelliJ</span></a></li>
+												<li><a href="#" class="btn btn-gray disabled"><span>Netbeans</span></a></li>
+											</ul>
 										</div>
-										<div class="price_col_body clearfix">
-											<div class="price_body_inner">
-												<div class="price_body_top">
-													<h:link outcome="/document">
-														<f:param name="title" value="installation" />
-														<strong>Windows</strong>
-														<span>Instructions for Install</span>
-													</h:link>
-												</div>
-												<div class="price_body_top">
-													<h:link outcome="/document">
-														<f:param name="title" value="installation" />
-														<strong>MacOS</strong>
-														<span>Instructions for Install</span>
-													</h:link>
-												</div>
-												<div class="price_body_top">
-													<h:link outcome="/document">
-														<f:param name="title" value="installation" />
-														<strong>Linux</strong>
-														<span>Instructions for Install</span>
-													</h:link>
-												</div>
+									</div>
+								</div>
+							</div> <!--/ pricing-item -->
+						</li>
+
+						<li class="price_col col_active">
+							<!--pricing item-->
+							<div class="price_item">
+								<div class="inner">
+									<div class="badge badge-popular"></div>
+									<div class="price_col_head">
+										<span class="price">JBDS</span>
+									</div>
+									<div class="price_col_body clearfix">
+										<div class="price_body_inner">
+											<div class="price_body_top">
+												<strong>Included</strong> <span>in <a href="http://tools.jboss.org/downloads/overview.html"
+													class="btn btn-large btn-caps">JBoss Developer Studio</a></span>
+											</div>
+											<ul>
+												<li>Graphical Interface</li>
+												<li>Workspace Sync</li>
+												<li>Embedded CLI</li>
+											</ul>
+										</div>
+									</div>
+									<div class="price_col_foot">
+										<div class="sign_up">
+											<a href="https://www.jboss.org/products/devstudio.html" class="btn btn-large btn-caps"><span>Download</span></a>
+										</div>
+									</div>
+								</div>
+							</div> <!--/ pricing-item -->
+						</li>
+
+						<li class="price_col price_col_purple">
+							<!--pricing item-->
+							<div class="price_item">
+								<div class="badge badge-popular"></div>
+								<div class="inner">
+									<div class="price_col_head">
+										<span class="price">OS</span>
+									</div>
+									<div class="price_col_body clearfix">
+										<div class="price_body_inner">
+											<div class="price_body_top">
+												<h:link outcome="/document">
+													<f:param name="title" value="installation" />
+													<strong>Windows</strong>
+													<span>Instructions for Install</span>
+												</h:link>
+											</div>
+											<div class="price_body_top">
+												<h:link outcome="/document">
+													<f:param name="title" value="installation" />
+													<strong>MacOS</strong>
+													<span>Instructions for Install</span>
+												</h:link>
+											</div>
+											<div class="price_body_top">
+												<h:link outcome="/document">
+													<f:param name="title" value="installation" />
+													<strong>Linux</strong>
+													<span>Instructions for Install</span>
+												</h:link>
 											</div>
 										</div>
 									</div>
-								</div> <!--/ pricing-item -->
-							</li>
-						</ul>
-					</div>
-					<!--/ pricing1-->
+								</div>
+							</div> <!--/ pricing-item -->
+						</li>
+					</ul>
 				</div>
+				<!--/ pricing1-->
 			</div>
 		</div>
 	</ui:define>

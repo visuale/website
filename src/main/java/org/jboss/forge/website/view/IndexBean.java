@@ -40,6 +40,6 @@ public class IndexBean
 
    public List<News> getNewsFeed()
    {
-      return service.getNews(5);
+      return service.getNews(3);
    }
 }

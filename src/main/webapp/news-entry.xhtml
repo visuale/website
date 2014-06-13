@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" template="/resources/scaffold/mainTemplate.xhtml">
+	<f:metadata>
+		<f:viewParam name="title" value='#{newsBean.documentTitle}' />
+		<f:event type="preRenderView" listener='#{newsBean.retrieve}' />
+	</f:metadata>
+	<ui:param name="pageTitle" value="News | JBoss Forge" />
+	<ui:define name="main">
+
+		<!-- Code highlighter -->
+		<h:outputStylesheet library="css" name="highlightstyle.css" />
+		<h:outputScript library="js" name="highlight.min.js" />
+		<script type="text/javascript">hljs.initHighlightingOnLoad();</script>
+
+		<!-- Breadcrumbs -->
+		<div class="row text-left">
+			<div class="col-sm-10 margin-20">
+				<h:link outcome="/index">JBoss Forge</h:link> &rsaquo;
+				<h:link outcome="/news">News</h:link>
+				&rsaquo; <h:outputText value="#{newsBean.documentTitle}"/>
+			</div>
+		</div>
+
+		<div class="row text-left">
+			<!-- Search Doc -->
+			<div class="col-sm-3">
+				<!-- Search -->
+				<div class="widget-container widget-search styled">
+					<form method="get" id="searchform" action="#">
+						<span class="btn btn-middle btn-caps"><input type="submit" value="Search" /></span>
+						<div class="field_text lightPlaceholder">
+							<input name="search" value="" type="text" placeholder="Search news" />
+						</div>
+					</form>
+				</div>
+				<!--/ Search -->
+				
+				<!-- Contribute -->
+				<h4>Contribute to this news</h4>
+				<p>
+					<a href="#{newsBean.document.repo}">#{newsBean.document.repo}</a>
+				</p>
+
+			</div>
+
+			<!-- Doc -->
+			<div class="col-sm-9">
+				<div class="widget-container widget-doc boxed preview">
+					<h:outputText escape="false" value="#{newsBean.getDocumentHTML()}" />
+				</div>
+			</div>
+			<!--/ Doc -->
+		</div>
+	</ui:define>
+</ui:composition>

@@ -19,6 +19,7 @@ import org.jboss.forge.website.model.Addon;
 import org.jboss.forge.website.model.Addon.Category;
 import org.jboss.forge.website.model.Contributor;
 import org.jboss.forge.website.model.Document;
+import org.jboss.forge.website.model.News;
 import org.yaml.snakeyaml.Yaml;
 
 import com.google.gson.Gson;
@@ -37,14 +38,14 @@ public class RepositoryService implements Serializable
    {
       List<Addon> result = new ArrayList<>();
 
-      List<Addon> community = fetchList(SiteConstants.ADDON_REPO_URL_COMMUNITY, Addon.class);
+      List<Addon> community = fetchYamlList(SiteConstants.ADDON_REPO_URL_COMMUNITY, Addon.class);
       for (Addon addon : community)
       {
          addon.setCategory(Category.COMMUNITY);
       }
       result.addAll(community);
 
-      List<Addon> core = fetchList(SiteConstants.ADDON_REPO_URL_CORE, Addon.class);
+      List<Addon> core = fetchYamlList(SiteConstants.ADDON_REPO_URL_CORE, Addon.class);
       for (Addon addon : core)
       {
          addon.setCategory(Category.CORE);
@@ -57,7 +58,7 @@ public class RepositoryService implements Serializable
    public List<Addon> getRandomCommunityAddons(int count)
    {
       List<Addon> result = new ArrayList<>();
-      List<Addon> addons = new ArrayList<>(fetchList(SiteConstants.ADDON_REPO_URL_COMMUNITY, Addon.class));
+      List<Addon> addons = new ArrayList<>(fetchYamlList(SiteConstants.ADDON_REPO_URL_COMMUNITY, Addon.class));
 
       Random random = new Random(System.currentTimeMillis());
       while (result.size() < count && !addons.isEmpty())
@@ -72,21 +73,21 @@ public class RepositoryService implements Serializable
    {
       List<Document> result = new ArrayList<>();
 
-      List<Document> getStarted = fetchList(SiteConstants.DOCS_REPO_URL_GETSTARTED, Document.class);
+      List<Document> getStarted = fetchYamlList(SiteConstants.DOCS_REPO_URL_GETSTARTED, Document.class);
       for (Document document : getStarted)
       {
          document.setCategory(org.jboss.forge.website.model.Document.Category.QUICKSTART);
       }
       result.addAll(getStarted);
 
-      List<Document> tutorials = fetchList(SiteConstants.DOCS_REPO_URL_TUTORIALS, Document.class);
+      List<Document> tutorials = fetchYamlList(SiteConstants.DOCS_REPO_URL_TUTORIALS, Document.class);
       for (Document document : tutorials)
       {
          document.setCategory(org.jboss.forge.website.model.Document.Category.TUTORIAL);
       }
       result.addAll(tutorials);
 
-      List<Document> advanced = fetchList(SiteConstants.DOCS_REPO_URL_ADVANCED, Document.class);
+      List<Document> advanced = fetchYamlList(SiteConstants.DOCS_REPO_URL_ADVANCED, Document.class);
       for (Document document : advanced)
       {
          document.setCategory(org.jboss.forge.website.model.Document.Category.ADVANCED);
@@ -137,60 +138,14 @@ public class RepositoryService implements Serializable
       return Arrays.asList(contributors);
    }
 
-   /*
-    * Helpers
-    */
-
-   private <T> List<T> parse(String content, Class<T> type)
-   {
-      List<T> result = new ArrayList<>();
-
-      if (content != null)
-      {
-         List<String> addonEntries = Arrays.asList(content.trim().split("---"));
-
-         for (String addonEntry : addonEntries)
-         {
-            if (!addonEntry.trim().isEmpty())
-            {
-               T addon = new Yaml().loadAs(addonEntry, type);
-               result.add(addon);
-            }
-         }
-      }
-      return result;
-   }
-
-   private <T> T parseJson(String content, Class<T> type)
-   {
-      return new Gson().fromJson(content, type);
-   }
-
-   private <T> List<T> fetchList(String url, Class<T> type)
-   {
-      String content = downloader.download(url);
-
-      List<T> result = null;
-      if (content != null)
-         result = parse(content, type);
-      else
-         result = new ArrayList<>();
-
-      return result;
-   }
-
    public List<Document> getRelatedDocuments(Addon addon, int count)
    {
-      List<Document> result = new ArrayList<Document>();
+      List<Document> result = new ArrayList<>();
 
       String tagString = addon.getTags();
-      List<String> tags = null;
       if (tagString != null && !tagString.isEmpty())
-         tags = Arrays.asList(tagString.split(","));
-
-      if (tags != null)
       {
-         for (String tag : tags)
+         for (String tag : tagString.split(","))
          {
             tag = tag.trim();
             for (Document doc : getAllDocuments())
@@ -204,6 +159,57 @@ public class RepositoryService implements Serializable
          }
       }
       return new ArrayList<Document>();
+   }
+
+   public List<News> getAllNews()
+   {
+      List<News> news = fetchYamlList(SiteConstants.DOCS_REPO_URL_NEWS, News.class);
+      return news;
+   }
+
+   public List<News> getNews(int count)
+   {
+      List<News> news = getAllNews();
+      return news.subList(0, Math.min(count, news.size()));
+   }
+
+   /*
+    * Helpers
+    */
+   private <T> T parseJson(String content, Class<T> type)
+   {
+      return new Gson().fromJson(content, type);
+   }
+
+   private <T> List<T> fetchYamlList(String url, Class<T> type)
+   {
+      String content = downloader.download(url);
+
+      List<T> result = null;
+      if (content != null)
+         result = parseYaml(content, type);
+      else
+         result = new ArrayList<>();
+
+      return result;
+   }
+
+   private <T> List<T> parseYaml(String content, Class<T> type)
+   {
+      List<T> result = new ArrayList<>();
+
+      if (content != null)
+      {
+         for (String entry : content.trim().split("---"))
+         {
+            if (!entry.trim().isEmpty())
+            {
+               T obj = new Yaml().loadAs(entry, type);
+               result.add(obj);
+            }
+         }
+      }
+      return result;
    }
 
 }

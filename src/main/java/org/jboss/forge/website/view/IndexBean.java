@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import org.jboss.forge.website.model.Addon;
 import org.jboss.forge.website.model.Contributor;
+import org.jboss.forge.website.model.News;
 import org.jboss.forge.website.service.RepositoryService;
 
 /**
@@ -35,5 +36,10 @@ public class IndexBean
    public List<Contributor> getContributors()
    {
       return service.getRandomContributors(5);
+   }
+
+   public List<News> getNewsFeed()
+   {
+      return service.getNews(5);
    }
 }

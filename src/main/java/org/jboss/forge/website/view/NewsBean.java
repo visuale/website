@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
@@ -14,8 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.jboss.forge.website.SiteConstants;
-import org.jboss.forge.website.model.Document;
-import org.jboss.forge.website.model.Document.Category;
+import org.jboss.forge.website.model.News;
 import org.jboss.forge.website.service.Downloader;
 import org.jboss.forge.website.service.RepositoryService;
 import org.ocpsoft.common.util.Strings;
@@ -32,7 +29,7 @@ import org.ocpsoft.urlbuilder.AddressBuilder;
 
 @Named
 @ConversationScoped
-public class DocumentBean implements Serializable
+public class NewsBean implements Serializable
 {
    private static final long serialVersionUID = -1447177331142569029L;
 
@@ -43,20 +40,17 @@ public class DocumentBean implements Serializable
    private RepositoryService service;
 
    private String documentTitle;
-   private Document document;
-   private List<Document> relatedDocuments;
+   private News document;
 
-   private List<Document> documents;
+   private List<News> documents;
    private String searchQuery;
-   private Set<Category> categoryFilter;
-   private List<Category> categories = Arrays.asList(Category.QUICKSTART, Category.TUTORIAL, Category.ADVANCED);
 
    public void load()
    {
-      List<Document> result = new ArrayList<>();
-      List<Document> documents = service.getAllDocuments();
+      List<News> result = new ArrayList<>();
+      List<News> documents = service.getAllNews();
 
-      for (Document document : documents)
+      for (News document : documents)
       {
          if (Strings.isNullOrEmpty(searchQuery)
                   ||
@@ -66,11 +60,7 @@ public class DocumentBean implements Serializable
                   || (document.getAuthor() != null && document.getAuthor().toLowerCase()
                            .contains(searchQuery.toLowerCase())))
          {
-            if (categoryFilter == null || categoryFilter.isEmpty() || document.getCategory() == null
-                     || categoryFilter.contains(document.getCategory()))
-            {
-               result.add(document);
-            }
+            result.add(document);
          }
 
       }
@@ -82,8 +72,7 @@ public class DocumentBean implements Serializable
    {
       if (documentTitle != null)
       {
-         List<Document> documents = service.getAllDocuments();
-         for (Document document : documents)
+         for (News document : service.getAllNews())
          {
             if (documentTitle.equalsIgnoreCase(document.getTitle().replaceAll("-+", " ").replaceAll("\\s+", " ")))
             {
@@ -94,11 +83,7 @@ public class DocumentBean implements Serializable
          }
       }
 
-      if (document != null)
-      {
-         setRelatedDocuments(service.getRelatedDocuments(document, 4));
-      }
-      else
+      if (document == null)
       {
          FacesContext.getCurrentInstance().getExternalContext().dispatch("/404");
       }
@@ -114,12 +99,12 @@ public class DocumentBean implements Serializable
       this.searchQuery = searchQuery;
    }
 
-   public List<Document> getDocuments()
+   public List<News> getDocuments()
    {
       return documents;
    }
 
-   public void setDocuments(List<Document> documents)
+   public void setDocuments(List<News> documents)
    {
       this.documents = documents;
    }
@@ -152,55 +137,7 @@ public class DocumentBean implements Serializable
       return result;
    }
 
-   public String getDocumentToC() throws MalformedURLException
-   {
-      String result = null;
-
-      if (document != null)
-      {
-         Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
-                  .path("/api/v1/serve/toc")
-                  .query("repo", document.getRepo())
-                  .query("ref", document.getRef())
-                  .query("path", document.getPath()).build();
-
-         try
-         {
-            result = downloader.download(address.toString());
-         }
-         catch (IllegalStateException e)
-         {
-            System.out.println("Failed to download document TOC: " + address);
-         }
-      }
-
-      if (Strings.isNullOrEmpty(result))
-         result = "No Content";
-
-      return result;
-   }
-
-   public Set<Category> getCategoryFilter()
-   {
-      return categoryFilter;
-   }
-
-   public void setCategoryFilter(Set<Category> categoryFilter)
-   {
-      this.categoryFilter = categoryFilter;
-   }
-
-   public List<Category> getCategories()
-   {
-      return categories;
-   }
-
-   public void setCategories(List<Category> categories)
-   {
-      this.categories = categories;
-   }
-
-   public Document getDocument()
+   public News getDocument()
    {
       return this.document;
    }
@@ -213,15 +150,5 @@ public class DocumentBean implements Serializable
    public void setDocumentTitle(String documentTitle)
    {
       this.documentTitle = documentTitle;
-   }
-
-   public List<Document> getRelatedDocuments()
-   {
-      return relatedDocuments;
-   }
-
-   public void setRelatedDocuments(List<Document> relatedDocuments)
-   {
-      this.relatedDocuments = relatedDocuments;
    }
 }

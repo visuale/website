@@ -56,7 +56,10 @@ public class RouteConfiguration extends HttpConfigurationProvider
 
                .addRule(Join.path("/document/{title}").to("/document").withChaining())
                .where("title").transposedBy(new SpacesToDashes())
-               
+
+               .addRule(Join.path("/news/{title}").to("/news-entry").withChaining())
+               .where("title").transposedBy(new SpacesToDashes())
+
                .addRule(Join.path("/addon/{id}").to("/addon").withChaining())
 
                /*

@@ -8,10 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.jboss.forge.website.SiteConstants;
 import org.jboss.forge.website.model.Document;
@@ -30,8 +29,7 @@ import org.ocpsoft.urlbuilder.AddressBuilder;
  * <tt>CriteriaBuilder</tt> for searches) rather than introducing a CRUD framework or custom base class.
  */
 
-@Named
-@ConversationScoped
+@Model
 public class DocumentBean implements Serializable
 {
    private static final long serialVersionUID = -1447177331142569029L;

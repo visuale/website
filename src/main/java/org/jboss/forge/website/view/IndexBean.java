@@ -9,8 +9,8 @@ package org.jboss.forge.website.view;
 
 import java.util.List;
 
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.jboss.forge.website.model.Addon;
 import org.jboss.forge.website.model.Contributor;
@@ -21,7 +21,7 @@ import org.jboss.forge.website.service.RepositoryService;
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  * @author <a href="ggastald@redhat.com">George Gastaldi</a>
  */
-@Named
+@Model
 public class IndexBean
 {
 

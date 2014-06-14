@@ -13,9 +13,15 @@
    <packaging>war</packaging>
    <properties>
       <version.rewrite>2.0.12.Final</version.rewrite>
+      <version.prettytime>3.2.5.Final</version.prettytime>
    </properties>
    <dependencyManagement>
       <dependencies>
+         <dependency>
+            <groupId>org.ocpsoft.prettytime</groupId>
+            <artifactId>prettytime-integration-jsf</artifactId>
+            <version>${version.prettytime}</version>
+         </dependency>
          <dependency>
             <groupId>org.ocpsoft.rewrite</groupId>
             <artifactId>rewrite-servlet</artifactId>
@@ -39,6 +45,10 @@
       </dependencies>
    </dependencyManagement>
    <dependencies>
+      <dependency>
+         <groupId>org.ocpsoft.prettytime</groupId>
+         <artifactId>prettytime-integration-jsf</artifactId>
+      </dependency>
       <dependency>
          <groupId>org.ocpsoft.rewrite</groupId>
          <artifactId>rewrite-servlet</artifactId>

@@ -56,7 +56,10 @@
 									<h5>
 										<h:outputText value="#{item.title}" />
 									</h5>
-									<span class="subtitle"><p>
+									<small> <h:outputText value="#{item.date}">
+											<f:converter converterId="org.ocpsoft.PrettyTimeConverter" />
+										</h:outputText>
+									</small> <span class="subtitle"><p>
 											<h:outputText value="#{item.summary}" />
 										</p></span>
 									<div class="btn btn-caps">

@@ -39,6 +39,7 @@ public class RedirectConfiguration extends HttpConfigurationProvider
                .when(Direction.isInbound()
                         .and(DispatchType.isRequest())
                         .and(Path.matches("/{p}.{s}"))
+                        .andNot(Path.matches("/1.x/{*}"))
                         .andNot(Resource.exists("/{p}.{s}"))
                         .andNot(ServletMapping.includes("/{p}"))
                )

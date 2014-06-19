@@ -38,12 +38,12 @@ public class RedirectConfiguration extends HttpConfigurationProvider
                .addRule()
                .when(Direction.isInbound()
                         .and(DispatchType.isRequest())
-                        .and(Path.matches("/{p}.{s}"))
+                        .and(Path.matches("/{p}"))
                         .andNot(Path.matches("/1.x/{*}"))
-                        .andNot(Resource.exists("/{p}.{s}"))
+                        .andNot(Resource.exists("/{p}"))
                         .andNot(ServletMapping.includes("/{p}"))
                )
-               .perform(Redirect.permanent(context.getContextPath() + "/1.x/{p}.{s}"))
+               .perform(Redirect.permanent(context.getContextPath() + "/1.x/{p}"))
                .where("p").matches(".*");
    }
 

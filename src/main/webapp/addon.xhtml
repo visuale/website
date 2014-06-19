@@ -69,7 +69,7 @@
 						<li style="margin-top: 15px;">
 							From Forge CLI:
 							<code class="xml language-bash hljs ">
-								addon-install-from-git --url #{addonBean.addon.repo} #{addonBean.addon.ref ne 'master' ? '--ref '.concat(addonBean.addon.ref) : '' } --coordinate #{addonBean.addon.id}
+								addon-install-from-git --url #{addonBean.addon.repo} --coordinate #{addonBean.addon.id} #{addonBean.addon.ref ne 'master' ? '--ref '.concat(addonBean.addon.ref) : '' }
 							</code>
 						</li>
 					</ul>

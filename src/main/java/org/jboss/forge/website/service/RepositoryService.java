@@ -107,7 +107,8 @@ public class RepositoryService implements Serializable
       {
          Document related = documents.remove(random.nextInt(documents.size()));
          if (document.getCategory() != null && document.getCategory().equals(related.getCategory()))
-            result.add(related);
+            if (!document.equals(related))
+               result.add(related);
       }
 
       return result;
@@ -150,15 +151,15 @@ public class RepositoryService implements Serializable
             tag = tag.trim();
             for (Document doc : getAllDocuments())
             {
-               if ((doc.getSummary() != null && doc.getSummary().contains(tag))
-                        || (doc.getSummary() != null && doc.getTitle().contains(tag)))
+               if ((doc.getSummary() != null && doc.getSummary().toLowerCase().contains(tag.toLowerCase()))
+                        || (doc.getSummary() != null && doc.getTitle().toLowerCase().contains(tag.toLowerCase())))
                {
                   result.add(doc);
                }
             }
          }
       }
-      return new ArrayList<Document>();
+      return result;
    }
 
    public List<News> getAllNews()

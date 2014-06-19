@@ -1278,7 +1278,7 @@ pre code {
 
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 90%; /* go responsive */
   }
   .col-md-1,
   .col-md-2,

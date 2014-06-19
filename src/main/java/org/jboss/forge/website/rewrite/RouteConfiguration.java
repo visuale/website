@@ -6,13 +6,20 @@
  */
 package org.jboss.forge.website.rewrite;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import javax.servlet.ServletContext;
 
+import org.ocpsoft.logging.Logger.Level;
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
+import org.ocpsoft.rewrite.config.Log;
 import org.ocpsoft.rewrite.context.EvaluationContext;
+import org.ocpsoft.rewrite.event.InboundRewrite;
 import org.ocpsoft.rewrite.event.Rewrite;
 import org.ocpsoft.rewrite.param.Transposition;
 import org.ocpsoft.rewrite.servlet.config.DispatchType;
@@ -23,6 +30,7 @@ import org.ocpsoft.rewrite.servlet.config.RequestParameter;
 import org.ocpsoft.rewrite.servlet.config.Resource;
 import org.ocpsoft.rewrite.servlet.config.SendStatus;
 import org.ocpsoft.rewrite.servlet.config.ServletMapping;
+import org.ocpsoft.rewrite.servlet.config.bind.RequestBinding;
 import org.ocpsoft.rewrite.servlet.config.rule.Join;
 
 /**
@@ -31,6 +39,29 @@ import org.ocpsoft.rewrite.servlet.config.rule.Join;
 @RewriteConfiguration
 public class RouteConfiguration extends HttpConfigurationProvider
 {
+   private DateFormat inboundDateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
+   private DateFormat outboundDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+   public class DateTransposition implements Transposition<String>
+   {
+      @Override
+      public String transpose(Rewrite event, EvaluationContext context, String value)
+      {
+         try
+         {
+            if (event instanceof InboundRewrite)
+               return inboundDateFormat.format(outboundDateFormat.parse(value));
+            else
+               return outboundDateFormat.format(inboundDateFormat.parse(value));
+         }
+         catch (ParseException e)
+         {
+            return value;
+         }
+      }
+
+   }
+
    private final class SpacesToDashes implements Transposition<String>
    {
       @Override
@@ -49,16 +80,21 @@ public class RouteConfiguration extends HttpConfigurationProvider
       return ConfigurationBuilder
                .begin()
 
+               .addRule()
+               .when(Path.captureIn("p").and(Direction.isInbound()))
+               .perform(Log.message(Level.INFO, "Handled {p}"))
+
                /*
                 * Page specific routes
                 */
-               .addRule(Join.path("/").to("/faces/index.xhtml"))
+               .addRule(Join.path("/").to("/index").withChaining())
 
                .addRule(Join.path("/document/{title}").to("/document").withChaining())
                .where("title").transposedBy(new SpacesToDashes())
 
-               .addRule(Join.path("/news/{title}").to("/news-entry").withChaining())
-               .where("title").transposedBy(new SpacesToDashes())
+               .addRule(Join.path("/news/{date}/{title}").to("/news-entry").withChaining())
+               .where("title").transposedBy(new SpacesToDashes()).bindsTo(RequestBinding.parameter("title"))
+               .where("date").transposedBy(new DateTransposition())
 
                .addRule(Join.path("/addon/{id}").to("/addon").withChaining())
 

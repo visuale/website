@@ -24,35 +24,6 @@
 
 		<!-- Forge intro -->
 		<div class="row">
-			<!-- News -->
-			<div class="col-sm-12">
-				<h3>See what's new</h3>
-				<div class="row">
-					<ui:repeat var="item" value="#{indexBean.newsFeed}">
-						<div class="col-sm-4">
-							<div class="widget-container widget-document boxed">
-								<div class="inner clearfix">
-									<h5>
-										<h:outputText value="#{item.title}" />
-									</h5>
-									<small> <h:outputText value="#{item.date}">
-											<f:converter converterId="org.ocpsoft.PrettyTimeConverter" />
-										</h:outputText>
-									</small> <span class="subtitle"><p>
-											<h:outputText value="#{item.summary}" />
-										</p></span>
-									<div class="btn btn-caps">
-										<h:link outcome="/news-entry">
-											<f:param name="title" value="#{item.title}" />
-											<span>Read this &rarr;</span>
-										</h:link>
-									</div>
-								</div>
-							</div>
-						</div>
-					</ui:repeat>
-				</div>
-			</div>
 			<div class="col-sm-12">
 				<h3>The fastest way to build Maven-based Java EE projects. Period</h3>
 				<iframe width="853" height="480" src="//www.youtube.com/embed/5xO3jhntTt8" frameborder="0"
@@ -97,6 +68,38 @@
 					<!--/ Search -->
 					<span><h:link outcome="addons" value="See all addons" /></span>
 					<hr class="margin-50" />
+				</div>
+			</div>
+			
+			
+			<!-- News -->
+			<div class="col-sm-12">
+				<h3>See what's new</h3>
+				<div class="row">
+					<ui:repeat var="item" value="#{indexBean.newsFeed}">
+						<div class="col-sm-4">
+							<div class="widget-container widget-document boxed">
+								<div class="inner clearfix">
+									<h5>
+										<h:outputText value="#{item.title}" />
+									</h5>
+									<small> <h:outputText value="#{item.date}">
+											<f:converter converterId="org.ocpsoft.PrettyTimeConverter" />
+										</h:outputText>
+									</small> <span class="subtitle"><p>
+											<h:outputText value="#{item.summary}" />
+										</p></span>
+									<div class="btn btn-caps">
+										<h:link outcome="/news-entry">
+											<f:param name="title" value="#{item.title}" />
+											<f:param name="date" value="#{item.date}" />
+											<span>Read this &rarr;</span>
+										</h:link>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ui:repeat>
 				</div>
 			</div>
 

@@ -2832,6 +2832,7 @@ textarea:focus {
 /* Notifications */
 /*-------------------------------------------*/
 
+/*
 .note {
     display: block;
     width: 16px;
@@ -2872,6 +2873,7 @@ textarea:focus {
     background: linear-gradient(to bottom,  rgba(250,169,4,1) 0%,rgba(240,98,28,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faa904', endColorstr='#f0621c',GradientType=0 );
 }
+*/
 
 /*-------------------------------------------*/
 /* Layout on Index Page */

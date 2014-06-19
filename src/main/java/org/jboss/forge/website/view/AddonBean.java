@@ -115,7 +115,7 @@ public class AddonBean implements Serializable
       Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
                .path("/api/v1/serve")
                .query("repo", addon.getRepo())
-               .query("ref", addon.getBranch())
+               .query("ref", addon.getRef())
                .query("path", path).build();
 
       String result = downloader.download(address.toString());

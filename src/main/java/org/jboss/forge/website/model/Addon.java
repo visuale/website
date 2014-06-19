@@ -23,7 +23,7 @@ public class Addon implements Serializable
    private String email;
    private String website;
    private String repo;
-   private String branch;
+   private String ref;
    private String tags;
    private String logo;
    private String path;
@@ -99,14 +99,14 @@ public class Addon implements Serializable
       this.repo = repo;
    }
 
-   public String getBranch()
+   public String getRef()
    {
-      return branch;
+      return ref;
    }
 
-   public void setBranch(String branch)
+   public void setRef(String ref)
    {
-      this.branch = branch;
+      this.ref = ref;
    }
    
    public String getPath()

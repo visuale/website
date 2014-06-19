@@ -23,6 +23,7 @@ import org.jboss.forge.website.model.News;
 import org.yaml.snakeyaml.Yaml;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
@@ -136,7 +137,7 @@ public class RepositoryService implements Serializable
    {
       String contributorsJson = downloader.download(SiteConstants.CONTRIBUTORS_JSON_URL);
       Contributor[] contributors = parseJson(contributorsJson, Contributor[].class);
-      return Arrays.asList(contributors);
+      return Arrays.asList(contributors != null ? contributors : new Contributor[0]);
    }
 
    public List<Document> getRelatedDocuments(Addon addon, int count)
@@ -179,7 +180,16 @@ public class RepositoryService implements Serializable
     */
    private <T> T parseJson(String content, Class<T> type)
    {
-      return new Gson().fromJson(content, type);
+      try
+      {
+         return new Gson().fromJson(content, type);
+      }
+      catch (JsonSyntaxException e)
+      {
+         // TODO Log this?
+         e.printStackTrace();
+      }
+      return null;
    }
 
    private <T> List<T> fetchYamlList(String url, Class<T> type)
@@ -203,10 +213,18 @@ public class RepositoryService implements Serializable
       {
          for (String entry : content.trim().split("---"))
          {
-            if (!entry.trim().isEmpty())
+            try
             {
-               T obj = new Yaml().loadAs(entry, type);
-               result.add(obj);
+               if (!entry.trim().isEmpty())
+               {
+                  T obj = new Yaml().loadAs(entry, type);
+                  result.add(obj);
+               }
+            }
+            catch (Exception e)
+            {
+               // TODO log this?
+               e.printStackTrace();
             }
          }
       }

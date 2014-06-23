@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.inject.Singleton;
 
@@ -18,6 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.ocpsoft.common.util.Streams;
+import org.ocpsoft.urlbuilder.util.Decoder;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
@@ -83,10 +85,13 @@ public class Downloader implements Serializable
 
    public void invalidateCachesByAddress(String pattern)
    {
+      pattern = ".*" + Pattern.quote(pattern) + ".*";
       log.info("Invalidating caches for pattern [" + pattern + "]");
       for (CacheEntry entry : cache.values())
       {
-         if (entry.getAddress().matches(pattern))
+         if (entry.getAddress().matches(pattern)
+                  || Decoder.query(entry.getAddress()).matches(pattern)
+                  || Decoder.path(entry.getAddress()).matches(pattern))
          {
             log.info("Invalidating cache entry [" + entry.getAddress() + "] for pattern [" + pattern + "]");
             entry.invalidate();

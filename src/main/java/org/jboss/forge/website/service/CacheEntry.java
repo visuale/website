@@ -44,4 +44,12 @@ public class CacheEntry
    {
       return address;
    }
+
+   @Override
+   public String toString()
+   {
+      return "CacheEntry [address=" + address + ", time=" + time + "]";
+   }
+   
+   
 }

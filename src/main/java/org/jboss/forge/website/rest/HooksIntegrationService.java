@@ -2,6 +2,8 @@ package org.jboss.forge.website.rest;
 
 import java.util.Map;
 
+import javax.ejb.Asynchronous;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -23,6 +25,7 @@ import com.google.gson.Gson;
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
+@Stateless
 @Path("/v1/webhooks")
 @Produces({ "application/xml", "application/json" })
 public class HooksIntegrationService
@@ -51,27 +54,35 @@ public class HooksIntegrationService
       }
       else
       {
-         try (CloseableHttpClient client = HttpClientBuilder.create().build())
+         try
          {
-            Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
-                     .path("/api/v1/manage").query("repo", repo).build();
-
-            HttpResponse response = client.execute(new HttpPut(address.toString()));
-
-            if (response.getStatusLine().getStatusCode() != 200)
-               throw new IllegalStateException("failed! (server returned status code: "
-                        + response.getStatusLine().getStatusCode() + ")");
-         }
-         catch (Exception e)
-         {
-            return Response.status(Status.INTERNAL_SERVER_ERROR)
-                     .entity("Failed to purge Redoculous cache for repo: " + repo).build();
+            invalidateRedoculous(repo);
          }
          finally
          {
-            downloader.invalidateCachesByAddress(".*repo=" + repo + ".*");
+            downloader.invalidateCachesByAddress(repo);
          }
       }
       return Response.status(Status.OK).build();
+   }
+
+   @Asynchronous
+   private void invalidateRedoculous(String repo)
+   {
+      try (CloseableHttpClient client = HttpClientBuilder.create().build())
+      {
+         Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
+                  .path("/api/v1/manage").query("repo", repo).build();
+
+         HttpResponse response = client.execute(new HttpPut(address.toString()));
+
+         if (response.getStatusLine().getStatusCode() != 200)
+            throw new IllegalStateException("failed! (server returned status code: "
+                     + response.getStatusLine().getStatusCode() + ")");
+      }
+      catch (Exception e)
+      {
+         throw new IllegalStateException("Failed to purge Redoculous cache for repo: " + repo, e);
+      }
    }
 }

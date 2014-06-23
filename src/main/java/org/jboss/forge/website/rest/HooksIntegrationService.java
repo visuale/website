@@ -3,6 +3,7 @@ package org.jboss.forge.website.rest;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -32,8 +33,7 @@ public class HooksIntegrationService
 
    @POST
    @Path("/cache_invalidate")
-   public Response githubUpdateRepository(String payload)
-            throws Exception
+   public Response githubUpdateRepository(@FormParam("payload") String payload) throws Exception
    {
       String repo = null;
       if (payload != null)

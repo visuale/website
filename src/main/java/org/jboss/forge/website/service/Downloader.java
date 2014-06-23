@@ -9,6 +9,7 @@ package org.jboss.forge.website.service;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import javax.inject.Singleton;
 
@@ -24,6 +25,7 @@ import org.ocpsoft.common.util.Streams;
 @Singleton
 public class Downloader implements Serializable
 {
+   private static final Logger log = Logger.getLogger(Downloader.class.getName());
    private static final long serialVersionUID = 1111860061208554914L;
    private static final long CACHE_EXPIRY_INTERVAL = 1000 * 60 * 60;
 
@@ -81,10 +83,14 @@ public class Downloader implements Serializable
 
    public void invalidateCachesByAddress(String pattern)
    {
+      log.info("Invalidating caches for pattern [" + pattern + "]");
       for (CacheEntry entry : cache.values())
       {
          if (entry.getAddress().matches(pattern))
+         {
+            log.info("Invalidating cache entry [" + entry.getAddress() + "] for pattern [" + pattern + "]");
             entry.invalidate();
+         }
       }
    }
 

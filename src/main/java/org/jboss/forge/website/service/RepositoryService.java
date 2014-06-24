@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.jboss.forge.website.SiteConstants;
@@ -28,6 +29,7 @@ import com.google.gson.JsonSyntaxException;
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
+@ApplicationScoped
 public class RepositoryService implements Serializable
 {
    private static final long serialVersionUID = -5958264325903728496L;

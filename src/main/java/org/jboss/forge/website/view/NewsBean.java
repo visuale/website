@@ -109,8 +109,17 @@ public class NewsBean implements Serializable
 
    public String getDocumentHTML() throws MalformedURLException
    {
-      String result = null;
+      String result = getDocumentHtml(downloader, document);
 
+      if (Strings.isNullOrEmpty(result))
+         result = "No Content";
+
+      return result;
+   }
+
+   public static String getDocumentHtml(Downloader downloader, News document)
+   {
+      String result = "";
       if (document != null)
       {
          Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
@@ -128,10 +137,6 @@ public class NewsBean implements Serializable
             System.out.println("Failed to download document: " + address);
          }
       }
-
-      if (Strings.isNullOrEmpty(result))
-         result = "No Content";
-
       return result;
    }
 

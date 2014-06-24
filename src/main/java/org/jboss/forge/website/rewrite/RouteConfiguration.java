@@ -6,20 +6,12 @@
  */
 package org.jboss.forge.website.rewrite;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import javax.servlet.ServletContext;
 
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
-import org.ocpsoft.rewrite.context.EvaluationContext;
-import org.ocpsoft.rewrite.event.InboundRewrite;
-import org.ocpsoft.rewrite.event.Rewrite;
-import org.ocpsoft.rewrite.param.Transposition;
 import org.ocpsoft.rewrite.servlet.config.DispatchType;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Path;
@@ -37,40 +29,6 @@ import org.ocpsoft.rewrite.servlet.config.rule.Join;
 @RewriteConfiguration
 public class RouteConfiguration extends HttpConfigurationProvider
 {
-   private DateFormat inboundDateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
-   private DateFormat outboundDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-   public class DateTransposition implements Transposition<String>
-   {
-      @Override
-      public String transpose(Rewrite event, EvaluationContext context, String value)
-      {
-         try
-         {
-            if (event instanceof InboundRewrite)
-               return inboundDateFormat.format(outboundDateFormat.parse(value));
-            else
-               return outboundDateFormat.format(inboundDateFormat.parse(value));
-         }
-         catch (ParseException e)
-         {
-            return value;
-         }
-      }
-
-   }
-
-   private final class SpacesToDashes implements Transposition<String>
-   {
-      @Override
-      public String transpose(Rewrite event, EvaluationContext context, String value)
-      {
-         if (Direction.isOutbound().evaluate(event, context))
-            return value.replaceAll("\\+|\\s+", "-").replaceAll("[-]+", "-").toLowerCase();
-         else
-            return value.replaceAll("-", " ").replaceAll("\\s+", " ");
-      }
-   }
 
    @Override
    public Configuration getConfiguration(ServletContext context)

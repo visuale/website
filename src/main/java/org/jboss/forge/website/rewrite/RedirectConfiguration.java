@@ -38,6 +38,13 @@ public class RedirectConfiguration extends HttpConfigurationProvider
                .addRule()
                .when(Direction.isInbound()
                         .and(DispatchType.isRequest())
+                        .and(Path.matches("/blog/atom.xml"))
+               )
+               .perform(Redirect.permanent(context.getContextPath() + "/atom.xml"))
+
+               .addRule()
+               .when(Direction.isInbound()
+                        .and(DispatchType.isRequest())
                         .and(Path.matches("/{p}"))
                         .andNot(Path.matches("/1.x/{*}"))
                         .andNot(Resource.exists("/{p}"))

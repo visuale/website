@@ -12,12 +12,10 @@ import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletContext;
 
-import org.ocpsoft.logging.Logger.Level;
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
-import org.ocpsoft.rewrite.config.Log;
 import org.ocpsoft.rewrite.context.EvaluationContext;
 import org.ocpsoft.rewrite.event.InboundRewrite;
 import org.ocpsoft.rewrite.event.Rewrite;
@@ -79,10 +77,6 @@ public class RouteConfiguration extends HttpConfigurationProvider
    {
       return ConfigurationBuilder
                .begin()
-
-               .addRule()
-               .when(Path.captureIn("p").and(Direction.isInbound()))
-               .perform(Log.message(Level.INFO, "Handled {p}"))
 
                /*
                 * Page specific routes

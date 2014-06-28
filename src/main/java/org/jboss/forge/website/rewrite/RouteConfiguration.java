@@ -40,7 +40,6 @@ public class RouteConfiguration extends HttpConfigurationProvider
                 * Page specific routes
                 */
                .addRule(Join.path("/").to("/index").withChaining())
-
                .addRule(Join.path("/document/{title}").to("/document").withChaining())
                .where("title").transposedBy(new SpacesToDashes())
 

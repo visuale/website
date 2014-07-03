@@ -11,7 +11,7 @@ package org.jboss.forge.website;
  */
 public interface SiteConstants
 {
-   String REPO_BASE_URL = "https://github.com/forge/addon-repository/raw/master";
+   String REPO_BASE_URL = "https://github.com/forge/website-data/raw/master";
 
    String ADDON_REPO_URL_CORE = REPO_BASE_URL + "/addons-core.yaml";
    String ADDON_REPO_URL_COMMUNITY = REPO_BASE_URL + "/addons-community.yaml";

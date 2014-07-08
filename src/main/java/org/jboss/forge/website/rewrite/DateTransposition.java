@@ -19,10 +19,13 @@ public class DateTransposition implements Transposition<String>
    {
       try
       {
-         if (event instanceof InboundRewrite)
-            return inboundDateFormat.format(outboundDateFormat.parse(value));
-         else
-            return outboundDateFormat.format(inboundDateFormat.parse(value));
+         synchronized (inboundDateFormat)
+         {
+            if (event instanceof InboundRewrite)
+               return inboundDateFormat.format(outboundDateFormat.parse(value));
+            else
+               return outboundDateFormat.format(inboundDateFormat.parse(value));
+         }
       }
       catch (ParseException e)
       {

@@ -7,6 +7,7 @@
 
 package org.jboss.forge.website.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.inject.Model;
@@ -27,7 +28,7 @@ public class CommunityBean
 
    public List<Contributor> getContributors()
    {
-      return service.getAllContributors();
+      return new ArrayList<>(service.getAllContributors());
    }
 
 }

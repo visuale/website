@@ -9,9 +9,10 @@ package org.jboss.forge.website.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -121,7 +122,7 @@ public class RepositoryService implements Serializable
    public List<Contributor> getRandomContributors(int count)
    {
       List<Contributor> result = new ArrayList<>();
-      List<Contributor> contributors = getAllContributors();
+      List<Contributor> contributors = new ArrayList<>(getAllContributors());
 
       Random random = new Random(System.currentTimeMillis());
       while (result.size() < count && !contributors.isEmpty())
@@ -132,30 +133,28 @@ public class RepositoryService implements Serializable
             result.add(related);
          }
       }
-
       return result;
    }
 
    private List<String> CORE_DEVELOPER_LOGINS = Arrays.asList("gastaldi", "lincolnthree", "koentsje", "VineetReynolds");
 
-   public List<Contributor> getAllContributors()
+   public Set<Contributor> getAllContributors()
    {
-      String contributorsJson = downloader.download(SiteConstants.CONTRIBUTORS_JSON_URL);
-      Contributor[] contributors = parseJson(contributorsJson, Contributor[].class);
-      if (contributors == null)
+      Set<Contributor> contributorSet = new HashSet<>();
+      for (String contributorURL : SiteConstants.CONTRIBUTORS_JSON_URLS)
       {
-         return Collections.emptyList();
-      }
-      else
-      {
-         List<Contributor> contributorList = new ArrayList<>();
-         for (Contributor contributor : contributors)
+         String contributorsJson = downloader.download(contributorURL);
+         Contributor[] contributors = parseJson(contributorsJson, Contributor[].class);
+         if (contributors != null)
          {
-            if (!CORE_DEVELOPER_LOGINS.contains(contributor.getLogin()))
-               contributorList.add(contributor);
+            for (Contributor contributor : contributors)
+            {
+               if (!CORE_DEVELOPER_LOGINS.contains(contributor.getLogin()))
+                  contributorSet.add(contributor);
+            }
          }
-         return contributorList;
       }
+      return contributorSet;
    }
 
    public List<Document> getRelatedDocuments(Addon addon, int count)

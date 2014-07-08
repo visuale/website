@@ -9,6 +9,7 @@ package org.jboss.forge.website.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -135,11 +136,26 @@ public class RepositoryService implements Serializable
       return result;
    }
 
+   private List<String> CORE_DEVELOPER_LOGINS = Arrays.asList("gastaldi", "lincolnthree", "koentsje", "VineetReynolds");
+
    public List<Contributor> getAllContributors()
    {
       String contributorsJson = downloader.download(SiteConstants.CONTRIBUTORS_JSON_URL);
       Contributor[] contributors = parseJson(contributorsJson, Contributor[].class);
-      return Arrays.asList(contributors != null ? contributors : new Contributor[0]);
+      if (contributors == null)
+      {
+         return Collections.emptyList();
+      }
+      else
+      {
+         List<Contributor> contributorList = new ArrayList<>();
+         for (Contributor contributor : contributors)
+         {
+            if (!CORE_DEVELOPER_LOGINS.contains(contributor.getLogin()))
+               contributorList.add(contributor);
+         }
+         return contributorList;
+      }
    }
 
    public List<Document> getRelatedDocuments(Addon addon, int count)

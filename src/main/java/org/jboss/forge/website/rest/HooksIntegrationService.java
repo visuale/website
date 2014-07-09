@@ -38,6 +38,7 @@ public class HooksIntegrationService
    public Response githubUpdateRepository(String payload) throws Exception
    {
       String repo = null;
+      String gitRepo = null;
       if (payload != null)
       {
          Gson gson = new Gson();
@@ -45,7 +46,13 @@ public class HooksIntegrationService
          Map<?, ?> repository = (Map<?, ?>) json.get("repository");
          repo = (String) repository.get("url");
          if (repo.startsWith("http") && !repo.endsWith(".git"))
-            repo = repo + ".git";
+         {
+            gitRepo = repo + ".git";
+         }
+         else
+         {
+            gitRepo = repo;
+         }
       }
 
       if (repo == null || repo.isEmpty())
@@ -56,7 +63,7 @@ public class HooksIntegrationService
       {
          try
          {
-            invalidateRedoculous(repo);
+            invalidateRedoculous(gitRepo);
          }
          finally
          {

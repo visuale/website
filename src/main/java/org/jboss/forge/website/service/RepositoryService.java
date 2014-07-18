@@ -9,6 +9,8 @@ package org.jboss.forge.website.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -183,6 +185,14 @@ public class RepositoryService implements Serializable
    public List<News> getAllNews()
    {
       List<News> news = fetchYamlList(SiteConstants.DOCS_REPO_URL_NEWS, News.class);
+      Collections.sort(news, new Comparator<News>()
+      {
+         @Override
+         public int compare(News o1, News o2)
+         {
+            return o2.getDate().compareTo(o1.getDate());
+         }
+      });
       return news;
    }
 

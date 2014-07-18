@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import org.jboss.forge.website.model.Addon;
 import org.jboss.forge.website.model.Contributor;
+import org.jboss.forge.website.model.Metadata;
 import org.jboss.forge.website.model.News;
 import org.jboss.forge.website.service.RepositoryService;
 
@@ -41,5 +42,10 @@ public class IndexBean
    public List<News> getNewsFeed()
    {
       return service.getNews(3);
+   }
+
+   public Metadata getMetadata()
+   {
+      return service.getMetadata();
    }
 }

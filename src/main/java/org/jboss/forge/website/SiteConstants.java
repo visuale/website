@@ -20,6 +20,7 @@ public interface SiteConstants
    String DOCS_REPO_URL_GETSTARTED = REPO_BASE_URL + "/docs-getstarted.yaml";
    String DOCS_REPO_URL_TUTORIALS = REPO_BASE_URL + "/docs-tutorials.yaml";
    String DOCS_REPO_URL_ADVANCED = REPO_BASE_URL + "/docs-advanced.yaml";
+   String METADATA_REPO_URL = REPO_BASE_URL + "/metadata.yaml";
 
    String[] CONTRIBUTORS_JSON_URLS = {
             "https://api.github.com/repos/forge/core/contributors",

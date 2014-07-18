@@ -24,6 +24,7 @@ import org.jboss.forge.website.model.Addon;
 import org.jboss.forge.website.model.Addon.Category;
 import org.jboss.forge.website.model.Contributor;
 import org.jboss.forge.website.model.Document;
+import org.jboss.forge.website.model.Metadata;
 import org.jboss.forge.website.model.News;
 import org.yaml.snakeyaml.Yaml;
 
@@ -200,6 +201,11 @@ public class RepositoryService implements Serializable
    {
       List<News> news = getAllNews();
       return news.subList(0, Math.min(count, news.size()));
+   }
+
+   public Metadata getMetadata()
+   {
+      return fetchYamlList(SiteConstants.METADATA_REPO_URL, Metadata.class).get(0);
    }
 
    /*

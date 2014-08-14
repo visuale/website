@@ -25,7 +25,7 @@
 		<div class="row text-left">
 			<!-- Search Doc -->
 			<div class="col-sm-3">
-				
+
 				<h4>About this addon</h4>
 				<ul>
 					<li style="margin-bottom: 15px;"><strong>Id</strong>: #{addonBean.addon.id}</li>
@@ -54,7 +54,7 @@
 				</p>
 
 			</div>
-			
+
 			<div class="col-sm-9">
 				<div class="widget-container widget-doc boxed preview">
 					<h1>#{addonBean.addon.name}</h1>
@@ -62,15 +62,13 @@
 					<ul>
 						<li>
 							From the system command line:
-							<code class="xml language-bash hljs ">
-							forge --install #{addonBean.addon.id}
-							</code>
+							<br/>
+							<input type="text" readonly="readonly" value="forge --install #{addonBean.addon.id}"/>
 						</li>
 						<li style="margin-top: 15px;">
 							From Forge CLI:
-							<code class="xml language-bash hljs ">
-								addon-install-from-git --url #{addonBean.addon.repo} --coordinate #{addonBean.addon.id} #{addonBean.addon.ref ne 'master' ? '--ref '.concat(addonBean.addon.ref) : '' }
-							</code>
+							<br/>
+							<input type="text" readonly="readonly" value="addon-install-from-git --url #{addonBean.addon.repo} --coordinate #{addonBean.addon.id} #{addonBean.addon.ref ne 'master' ? '--ref '.concat(addonBean.addon.ref) : '' }"/>
 						</li>
 					</ul>
 				</div>

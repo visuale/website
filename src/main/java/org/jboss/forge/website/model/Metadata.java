@@ -7,13 +7,16 @@
 
 package org.jboss.forge.website.model;
 
+import java.util.Date;
+
 /**
- * 
+ *
  * @author <a href="ggastald@redhat.com">George Gastaldi</a>
  */
 public class Metadata
 {
    private String latestVersion;
+   private Date latestReleaseDate;
 
    public String getLatestVersion()
    {
@@ -23,5 +26,15 @@ public class Metadata
    public void setLatestVersion(String latestVersion)
    {
       this.latestVersion = latestVersion;
+   }
+
+   public Date getLatestReleaseDate()
+   {
+      return latestReleaseDate;
+   }
+
+   public void setLatestReleaseDate(Date latestReleaseDate)
+   {
+      this.latestReleaseDate = latestReleaseDate;
    }
 }

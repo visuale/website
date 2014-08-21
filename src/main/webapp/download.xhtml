@@ -1,12 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" template="/resources/scaffold/mainTemplate.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	template="/resources/scaffold/mainTemplate.xhtml">
 	<ui:param name="pageTitle" value="Download | JBoss Forge" />
 	<ui:define name="main">
 		<!-- Intro -->
 		<div class="row">
 			<div class="col-sm-12">
-				<h1 class="margin-100">Get JBoss Forge #{indexBean.metadata.latestVersion} today!</h1>
+				<h1 class="margin-100">
+					Get JBoss Forge #{indexBean.metadata.latestVersion} today! <br /> <small> Released <h:outputText
+							value="#{indexBean.metadata.latestReleaseDate}">
+							<f:converter converterId="org.ocpsoft.PrettyTimeConverter" />
+						</h:outputText>
+					</small>
+				</h1>
 			</div>
 		</div>
 
@@ -15,9 +23,11 @@
 			<div class="col-sm-4">
 				<h3>Forge is included in JBoss Developer Studio</h3>
 				<p>
-					<a target="_blank" href="https://www.jboss.org/products/devstudio.html" class="btn btn-middle"><span>Download DevStudio</span></a>
+					<a target="_blank" href="https://www.jboss.org/products/devstudio.html" class="btn btn-middle"><span>Download
+							DevStudio</span></a>
 				</p>
-				<p>JBoss Developer Studio is an Eclipse-based IDE that provides JBoss specific functionality to make it even easier to build your applications.</p>
+				<p>JBoss Developer Studio is an Eclipse-based IDE that provides JBoss specific functionality to make it even
+					easier to build your applications.</p>
 			</div>
 			<div class="col-sm-4">
 				<h3>Get Forge for your IDE</h3>
@@ -47,7 +57,9 @@
 					</div>
 					<div class="col-sm-9 text-left">
 						<p>
-							Grab the <a href="https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&amp;g=org.jboss.forge&amp;a=forge-distribution&amp;v=LATEST&amp;e=zip&amp;c=offline">ZIP</a> to install Forge natively in any Linux distribution.
+							Grab the <a
+								href="https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&amp;g=org.jboss.forge&amp;a=forge-distribution&amp;v=LATEST&amp;e=zip&amp;c=offline">ZIP</a>
+							to install Forge natively in any Linux distribution.
 						</p>
 					</div>
 				</div>
@@ -57,7 +69,9 @@
 					</div>
 					<div class="col-sm-9 text-left">
 						<p>
-							Grab the <a href="https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&amp;g=org.jboss.forge&amp;a=forge-distribution&amp;v=LATEST&amp;e=zip&amp;c=offline">ZIP</a> to install Forge natively on Windows 7.
+							Grab the <a
+								href="https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&amp;g=org.jboss.forge&amp;a=forge-distribution&amp;v=LATEST&amp;e=zip&amp;c=offline">ZIP</a>
+							to install Forge natively on Windows 7.
 						</p>
 					</div>
 				</div>

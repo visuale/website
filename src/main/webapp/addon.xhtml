@@ -60,7 +60,7 @@
 					<h1>#{addonBean.addon.name}</h1>
 					<h2>Installation</h2>
 					<ul>
-						<li>
+						<li style="display: #{addonBean.addon.category != 'CORE' ? 'none' : 'block'}">
 							From the system command line:
 							<br/>
 							<input type="text" readonly="readonly" value="forge --install #{addonBean.addon.id}"/>

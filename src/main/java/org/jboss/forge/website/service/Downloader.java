@@ -9,6 +9,7 @@ package org.jboss.forge.website.service;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -54,14 +55,16 @@ public class Downloader implements Serializable
 
             else
                throw new IllegalStateException("failed! (server returned status code: "
-                        + response.getStatusLine().getStatusCode() + ")");
+                        + response.getStatusLine().getStatusCode() + ") for URL [" + url + "]");
          }
          catch (IllegalStateException e)
          {
+            log.log(Level.SEVERE, "Error downloading URL [" + url + "]", e);
             throw e;
          }
          catch (Exception e)
          {
+            log.log(Level.SEVERE, "Error downloading URL [" + url + "]", e);
             throw new IllegalStateException("Failed to download: " + url, e);
          }
 

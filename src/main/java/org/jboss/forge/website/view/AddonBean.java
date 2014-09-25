@@ -118,7 +118,15 @@ public class AddonBean implements Serializable
                .query("ref", addon.getRef())
                .query("path", path).build();
 
-      String result = downloader.download(address.toString());
+      String result;
+      try
+      {
+         result = downloader.download(address.toString());
+      }
+      catch (Exception e)
+      {
+         result = "<h3>Could not download README</h3>";
+      }
 
       if (Strings.isNullOrEmpty(result))
          result = "No Content";

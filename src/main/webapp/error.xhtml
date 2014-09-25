@@ -12,6 +12,13 @@
 			Sorry, something went wrong. Please try again or return
 			<h:link outcome="/index.xhtml">&rarr; home</h:link>.
 		</h1>
+		<hr/>
+		<ui:fragment rendered="true">
+			<div style="text-align: left;">
+				<h3>If you <a href="https://issues.jboss.org/browse/FORGE">report this error</a>, be sure to include:</h3>
+				<pre>#{facesMessages.dump(requestScope['javax.servlet.error.exception'])}</pre>
+			</div>
+		</ui:fragment>
 	</ui:define>
 
 </ui:composition>

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +47,8 @@ public class DocumentBean implements Serializable
 
    private List<Document> documents;
    private String searchQuery;
+
+   private Category category;
    private Set<Category> categoryFilter;
    private List<Category> categories = Arrays.asList(Category.QUICKSTART, Category.TUTORIAL, Category.ADVANCED);
 
@@ -53,6 +56,13 @@ public class DocumentBean implements Serializable
    {
       List<Document> result = new ArrayList<>();
       List<Document> documents = service.getAllDocuments();
+
+      if (category != null)
+      {
+         if (categoryFilter == null)
+            categoryFilter = new HashSet<>();
+         categoryFilter.add(category);
+      }
 
       for (Document document : documents)
       {
@@ -221,5 +231,15 @@ public class DocumentBean implements Serializable
    public void setRelatedDocuments(List<Document> relatedDocuments)
    {
       this.relatedDocuments = relatedDocuments;
+   }
+
+   public Category getCategory()
+   {
+      return category;
+   }
+
+   public void setCategory(Category category)
+   {
+      this.category = category;
    }
 }

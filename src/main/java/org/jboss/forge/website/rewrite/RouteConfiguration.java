@@ -8,10 +8,12 @@ package org.jboss.forge.website.rewrite;
 
 import javax.servlet.ServletContext;
 
+import org.ocpsoft.logging.Logger.Level;
 import org.ocpsoft.rewrite.annotation.RewriteConfiguration;
 import org.ocpsoft.rewrite.config.Configuration;
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
+import org.ocpsoft.rewrite.config.Log;
 import org.ocpsoft.rewrite.servlet.config.DispatchType;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Path;
@@ -57,7 +59,7 @@ public class RouteConfiguration extends HttpConfigurationProvider
                         .and(Path.matches("/{p}.xhtml"))
                         .and(Resource.exists("/{p}.xhtml"))
                         .andNot(ServletMapping.includes("/{p}")))
-               .perform(SendStatus.error(404))
+               .perform(Log.message(Level.INFO, "Blocked direct file access to {p}").and(SendStatus.error(404)))
                .where("p").matches(".*")
 
                /*
@@ -65,16 +67,27 @@ public class RouteConfiguration extends HttpConfigurationProvider
                 */
                .addRule(Join.path("/{p}/").to("/faces/{p}/index.xhtml").withChaining())
                .when(Resource.exists("/{p}/index.xhtml"))
+               .perform(Log.message(Level.INFO, "Joined path /{p}/ to /faces/{p}/index.xhtml"))
                .where("p").matches(".*")
 
                .addRule(Join.path("/{p}").to("/faces/{p}.xhtml").withChaining())
                .when(Resource.exists("/{p}.xhtml"))
+               .perform(Log.message(Level.INFO, "Joined path /{p} to /faces/{p}.xhtml"))
                .where("p").matches(".*")
 
                .addRule()
                .when(DispatchType.isRequest().and(Direction.isInbound())
                         .and(RequestParameter.exists("ticket")).and(Path.matches("/auth")))
                .perform(Redirect.temporary(context.getContextPath()))
+
+               /*
+                * Resources routes
+                */
+               .addRule(Join.path("/faces/images/{p}").to("/faces/javax.faces.resource/{p}?ln=images"))
+               .when(Resource.exists("/resources/images/{p}"))
+               .perform(Log.message(Level.INFO,
+                        "Joined path /faces/images/{p} to /faces/javax.faces.resource/{p}?ln=images"))
+               .where("p").matches(".*")
 
       ;
    }

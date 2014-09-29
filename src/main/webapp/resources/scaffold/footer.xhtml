@@ -1,0 +1,106 @@
+<!DOCTYPE html [
+    <!ENTITY nbsp "&#160;"> 
+    <!ENTITY amp "&#38;"> 
+    <!ENTITY copy "&#169;"> 
+]>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition>
+
+
+<div class="page-section static blue footer-links-support">
+    <div class="container">
+        <div class="row link-section-columns">
+            <div class="col-sm-3 col-xs-12 footer-first-section">
+                <div class="jboss-forge-logo">&nbsp;</div>
+                <ul>
+                    <li><a href="https://github.com/forge/core">Source code</a></li>
+                    <li><a href="https://issues.jboss.org/browse/FORGE">Issue tracker</a></li>
+                    <li><a href="#{request.contextPath}/1.x/">Forge 1.x</a></li>
+                </ul>
+            </div><!-- / .col-sm-3 -->
+
+            <div class="col-sm-3 col-xs-12 footer-link-div">
+                <h3>Support</h3>
+                <p>Search our documentation to find answers and tutorials to common questions, or <h:link outcome="/community">ask the community</h:link> if you can't find what you need.</p>
+
+                <form action="#{request.contextPath}/documentation" class="search-form-footer">
+                    <fieldset>
+                        <input type="search" name="search" class="search-input" size="20" /><a class="search-box" href="#"><span class="glyphicon glyphicon-search"></span></a>
+                    </fieldset>
+                </form>
+            </div><!-- / .col-sm-3 -->
+
+            <div class="col-sm-3 col-xs-12 footer-link-div">
+                <h3>Resources</h3>
+                <ul>
+
+                    <li><h:link outcome="/documentation">Documentation</h:link></li>
+                    <li><h:link outcome="/addons">Addons</h:link></li>
+                    <li><h:link outcome="news">News</h:link></li>
+                </ul>
+            </div><!-- / .col-sm-3 -->
+
+            <div class="col-sm-3 col-xs-12 footer-link-div">
+                <h3>Contact</h3>
+
+                <ul>
+                    <li><a href="https://community.jboss.org/en/forge">Forums</a></li>
+                    <li><a href="http://webchat.freenode.net/?channels=forge">#forge on irc.freenode.net</a></li>
+                    <li><a href="https://lists.jboss.org/mailman/listinfo/forge-users">forge-users</a></li>
+                    <li><a href="https://lists.jboss.org/mailman/listinfo/forge-dev">forge-dev</a></li>
+                </ul>
+            </div><!-- / .col-sm-3 -->
+
+
+        </div><!-- / .row -->
+
+
+    </div><!-- / container -->
+
+</div><!-- / .page-section static blue  -->
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                &copy; JBoss Forge All Rights Reserved.
+                <span class="footer-medallion hidden-xs"> </span>
+            </div>
+        </div><!-- / .row -->
+    </div><!-- / .container -->
+
+
+</footer>
+
+
+
+
+<!--==================  / END PAGE CONTENT  ==================-->
+
+
+
+
+	<!-- Google Analytics -->
+	<script>
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script',
+				'//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-34467975-1', 'auto');
+		ga('send', 'pageview');
+	</script>
+
+</ui:composition>
+
+</html>

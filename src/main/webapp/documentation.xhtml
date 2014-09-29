@@ -4,6 +4,8 @@
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough" template="/resources/scaffold/mainTemplate.xhtml">
 	<f:metadata>
+		<f:viewParam name="search" value='#{documentBean.searchQuery}'/>
+		<f:viewParam name="category" value='#{documentBean.category}'/>
 		<f:event type="preRenderView" listener='#{documentBean.load}' />
 	</f:metadata>
 	<ui:param name="pageTitle" value="Documentation | JBoss Forge" />

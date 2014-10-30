@@ -30,7 +30,12 @@ public class RedirectConfiguration extends HttpConfigurationProvider
    {
       return ConfigurationBuilder
                .begin()
-
+               .addRule()
+               .when(Direction.isInbound()
+                        .and(DispatchType.isRequest())
+                        .and(Path.matches("/sh"))
+               )
+               .perform(Redirect.permanent("https://raw.githubusercontent.com/forge/core/master/forge-install.sh"))
                /*
                 * Redirect requests to the old website to the /1.x/ path
                 */
@@ -41,7 +46,7 @@ public class RedirectConfiguration extends HttpConfigurationProvider
                         .and(Path.matches("/blog/atom.xml"))
                )
                .perform(Redirect.permanent(context.getContextPath() + "/atom.xml"))
-
+               
                .addRule()
                .when(Direction.isInbound()
                         .and(DispatchType.isRequest())

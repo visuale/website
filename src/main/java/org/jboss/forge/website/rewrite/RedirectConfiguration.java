@@ -57,7 +57,7 @@ public class RedirectConfiguration extends HttpConfigurationProvider
                      try
                      {
                         writer = event.getResponse().getWriter();
-                        writer.println(content);
+                        writer.print(content);
                         writer.flush();
                      }
                      catch (IOException e)

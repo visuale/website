@@ -33,5 +33,7 @@ public interface SiteConstants
             "https://api.github.com/repos/jbosstools/jbosstools-forge/contributors"
    };
 
-   String REDOCULOUS_DOMAIN = "redoculous-lincolnbaxter.rhcloud.com";
+   String REDOCULOUS_DOMAIN = "localhost";
+   String REDOCULOUS_PATH = "/redoculous-server";
+   int REDOCULOUS_PORT = 8080;
 }

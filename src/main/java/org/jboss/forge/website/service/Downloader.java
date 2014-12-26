@@ -78,6 +78,12 @@ public class Downloader implements Serializable
       return content;
    }
 
+   public DownloadResult downloadStream(String url)
+   {
+      DownloadResult result = new DownloadResult(url);
+      return result;
+   }
+
    public void invalidateCaches()
    {
       for (CacheEntry entry : cache.values())

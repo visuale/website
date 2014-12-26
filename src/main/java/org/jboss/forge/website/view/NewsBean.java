@@ -122,8 +122,10 @@ public class NewsBean implements Serializable
       String result = "";
       if (document != null)
       {
-         Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
-                  .path("/api/v1/serve")
+         Address address = AddressBuilder.begin().scheme("http")
+                  .domain(SiteConstants.REDOCULOUS_DOMAIN)
+                  .port(SiteConstants.REDOCULOUS_PORT)
+                  .path(SiteConstants.REDOCULOUS_PATH + "/api/v1/serve")
                   .query("repo", document.getRepo())
                   .query("ref", document.getRef())
                   .query("path", document.getPath()).build();

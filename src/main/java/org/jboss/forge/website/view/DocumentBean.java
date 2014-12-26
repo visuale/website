@@ -12,12 +12,19 @@ import java.util.Set;
 import javax.enterprise.inject.Model;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.forge.website.SiteConstants;
 import org.jboss.forge.website.model.Document;
 import org.jboss.forge.website.model.Document.Category;
+import org.jboss.forge.website.service.DownloadResult;
 import org.jboss.forge.website.service.Downloader;
 import org.jboss.forge.website.service.RepositoryService;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.ocpsoft.common.util.Streams;
 import org.ocpsoft.common.util.Strings;
 import org.ocpsoft.urlbuilder.Address;
 import org.ocpsoft.urlbuilder.AddressBuilder;
@@ -33,6 +40,8 @@ import org.ocpsoft.urlbuilder.AddressBuilder;
 @Model
 public class DocumentBean implements Serializable
 {
+   private static final String DOCUMENT_RESOURCE_PARAM = "document.resource";
+
    private static final long serialVersionUID = -1447177331142569029L;
 
    @Inject
@@ -104,6 +113,11 @@ public class DocumentBean implements Serializable
 
       if (document != null)
       {
+         FacesContext context = FacesContext.getCurrentInstance();
+         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+         if (request.getParameter(DOCUMENT_RESOURCE_PARAM) != null)
+            serveDocumentResource();
+
          setRelatedDocuments(service.getRelatedDocuments(document, 4));
       }
       else
@@ -132,14 +146,49 @@ public class DocumentBean implements Serializable
       this.documents = documents;
    }
 
+   public void serveDocumentResource() throws MalformedURLException
+   {
+      FacesContext context = FacesContext.getCurrentInstance();
+
+      if (document != null)
+      {
+         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+
+         Address address = AddressBuilder.begin().scheme("http")
+                  .domain(SiteConstants.REDOCULOUS_DOMAIN)
+                  .port(SiteConstants.REDOCULOUS_PORT)
+                  .path(SiteConstants.REDOCULOUS_PATH + "/api/v1/serve")
+                  .query("repo", document.getRepo())
+                  .query("ref", document.getRef())
+                  .query("path", request.getParameter(DOCUMENT_RESOURCE_PARAM))
+                  .query("nogzip", "true").build();
+
+         HttpServletResponse response =
+                  (HttpServletResponse) context.getExternalContext().getResponse();
+         try (DownloadResult result = downloader.downloadStream(address.toString()))
+         {
+            response.setContentType(result.getContentType());
+            Streams.copy(result.getStream(), response.getOutputStream());
+         }
+         catch (Exception e)
+         {
+            System.out.println("Failed to download document resource: " + address);
+         }
+      }
+
+      context.responseComplete();
+   }
+
    public String getDocumentHTML() throws MalformedURLException
    {
       String result = null;
 
       if (document != null)
       {
-         Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
-                  .path("/api/v1/serve")
+         Address address = AddressBuilder.begin().scheme("http")
+                  .domain(SiteConstants.REDOCULOUS_DOMAIN)
+                  .port(SiteConstants.REDOCULOUS_PORT)
+                  .path(SiteConstants.REDOCULOUS_PATH + "/api/v1/serve")
                   .query("repo", document.getRepo())
                   .query("ref", document.getRef())
                   .query("path", document.getPath()).build();
@@ -147,6 +196,7 @@ public class DocumentBean implements Serializable
          try
          {
             result = downloader.download(address.toString());
+            result = transposeImageLinks(result);
          }
          catch (IllegalStateException e)
          {
@@ -166,8 +216,10 @@ public class DocumentBean implements Serializable
 
       if (document != null)
       {
-         Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
-                  .path("/api/v1/serve/toc")
+         Address address = AddressBuilder.begin().scheme("http")
+                  .domain(SiteConstants.REDOCULOUS_DOMAIN)
+                  .port(SiteConstants.REDOCULOUS_PORT)
+                  .path(SiteConstants.REDOCULOUS_PATH + "/api/v1/serve/toc")
                   .query("repo", document.getRepo())
                   .query("ref", document.getRef())
                   .query("path", document.getPath()).build();
@@ -178,7 +230,7 @@ public class DocumentBean implements Serializable
          }
          catch (IllegalStateException e)
          {
-            System.out.println("Failed to download document TOC: " + address);
+            System.out.println("Failed to download document Table of Contents: " + address);
          }
       }
 
@@ -186,6 +238,32 @@ public class DocumentBean implements Serializable
          result = "No Content";
 
       return result;
+   }
+
+   private String transposeImageLinks(String content)
+   {
+      if (content != null)
+      {
+         org.jsoup.nodes.Document document = Jsoup.parse(content, "UTF-8");
+         Elements links = document.getElementsByTag("img");
+
+         for (Element link : links)
+         {
+            String src = link.attr("src");
+
+            if (!src.matches("^(\\w+://|www\\.|/).*") && !src.startsWith("#"))
+            {
+               HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+                        .getRequest();
+               String requestURI = (String) request.getAttribute("javax.servlet.forward.request_uri");
+               String address = AddressBuilder.begin().path(requestURI).query(DOCUMENT_RESOURCE_PARAM,
+                        this.document.getLinkTransposition() + src).build().toString();
+               link.attr("src", address);
+            }
+         }
+         content = document.toString();
+      }
+      return content;
    }
 
    public Set<Category> getCategoryFilter()

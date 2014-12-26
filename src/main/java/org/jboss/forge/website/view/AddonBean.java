@@ -112,8 +112,10 @@ public class AddonBean implements Serializable
             path = "/" + path;
       }
 
-      Address address = AddressBuilder.begin().scheme("http").domain(SiteConstants.REDOCULOUS_DOMAIN)
-               .path("/api/v1/serve")
+      Address address = AddressBuilder.begin().scheme("http")
+               .domain(SiteConstants.REDOCULOUS_DOMAIN)
+               .port(SiteConstants.REDOCULOUS_PORT)
+               .path(SiteConstants.REDOCULOUS_PATH + "/api/v1/serve")
                .query("repo", addon.getRepo())
                .query("ref", addon.getRef())
                .query("path", path).build();

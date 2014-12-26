@@ -21,6 +21,7 @@ public class Document implements Serializable
    private String path;
    private String author;
    private String email;
+   private String linkTransposition;
    private Category category;
 
    public String getTitle()
@@ -91,6 +92,16 @@ public class Document implements Serializable
    public void setEmail(String email)
    {
       this.email = email;
+   }
+
+   public String getLinkTransposition()
+   {
+      return linkTransposition == null ? "" : linkTransposition;
+   }
+
+   public void setLinkTransposition(String linkTransposition)
+   {
+      this.linkTransposition = linkTransposition;
    }
 
    public Category getCategory()

@@ -12,7 +12,7 @@
    <version>1.0.0-SNAPSHOT</version>
    <packaging>war</packaging>
    <properties>
-      <version.rewrite>2.0.12.Final</version.rewrite>
+      <version.rewrite>3.0.0.Alpha4</version.rewrite>
       <version.prettytime>3.2.5.Final</version.prettytime>
    </properties>
    <dependencyManagement>

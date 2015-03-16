@@ -60,8 +60,8 @@
 				</formatter>
 				<file relative-to="jboss.server.log.dir" path="server.log" />
 				<append value="true" />
-				<rotate-size value="10m" />
-				<max-backup-index value="10" />				
+				<rotate-size value="2m" />
+				<max-backup-index value="2" />				
 			</size-rotating-file-handler>
 			<logger category="com.arjuna">
 				<level name="WARN" />

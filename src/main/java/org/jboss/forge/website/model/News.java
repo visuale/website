@@ -16,6 +16,7 @@ public class News implements Serializable
    private String path;
    private String author;
    private String email;
+   private String tags;
    private Date date;
 
    public String getTitle()
@@ -97,6 +98,17 @@ public class News implements Serializable
    {
       this.date = date;
    }
+    
+   public void setTags(String tags) 
+   {
+      this.tags = tags;
+   }
+
+   public String getTags()
+   {
+      return this.tags;
+   }
+	
 
    @Override
    public int hashCode()
